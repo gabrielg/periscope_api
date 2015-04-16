@@ -18,12 +18,12 @@ API. Use at your own risk.
 
 ## How?
 
-It the knowledge just came to me in a dream, and/or I reverse-engineered it by
+The knowledge just came to me in a dream, and/or I reverse-engineered it by
 tinkering with the running iOS app and sniffing network traffic.
 
 ## Can I throw big old-timey canvas sacks of cash at you to do this for a living?
 
-[Yes, I just moved to New York and now I am available to help you make your computers compute, or figure out how your or other computers are computing](http://www.gironda.org/cv/).
+[Yes, I just moved to New York and I am now available to help you make your computers compute](http://www.gironda.org/cv/).
 
 ## How long did this take you?
 
