@@ -2,7 +2,7 @@
 
 ## Overview
 
-Broadly, [Periscope](http://www.periscope.tv/) makes use of four different
+Broadly, [Periscope](http://www.periscope.tv/) makes use of five different
 services:
 
 ### Twitter's xAuth mechanism.
