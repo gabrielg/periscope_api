@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+
+require 'periscope_api'
+require 'periscope_api/twitter_xauth'
+
+unless ARGV[0] && File.exist?(ARGV[0])
+  puts "Usage: #{$0} [VIDEO_FILE]"
+  exit(1)
+end
+
+TWITTER_USERNAME          = ENV["TWITTER_USERNAME"]
+TWITTER_PASSWORD          = ENV["TWITTER_PASSWORD"]
+IOS_CONSUMER_KEY          = ENV["IOS_CONSUMER_KEY"]
+IOS_CONSUMER_SECRET       = ENV["IOS_CONSUMER_SECRET"]
+PERISCOPE_CONSUMER_KEY    = ENV["PERISCOPE_CONSUMER_KEY"]
+PERISCOPE_CONSUMER_SECRET = ENV["PERISCOPE_CONSUMER_SECRET"]
+
+def stream_video(path, rtmp_url)
+  system(
+    "ffmpeg",
+    "-loglevel",
+    "verbose",
+    "-re",
+    "-i",
+    path,
+    "-vcodec",
+    "libx264",
+    "-b",
+    "350k",
+    "-f",
+    "flv",
+    rtmp_url)
+end
+
+auth = PeriscopeAPI::TwitterXAuth.new(
+  twitter_consumer_key:      IOS_CONSUMER_KEY,
+  twitter_consumer_secret:   IOS_CONSUMER_SECRET,
+  periscope_consumer_key:    PERISCOPE_CONSUMER_KEY,
+  periscope_consumer_secret: PERISCOPE_CONSUMER_SECRET)
+
+credentials = auth.authenticate(TWITTER_USERNAME, TWITTER_PASSWORD)
+
+pa = PeriscopeAPI.new(
+  credentials[:secret],
+  credentials[:token],
+  credentials[:user_id],
+  credentials[:screen_name])
+
+pa.login
+broadcast = pa.create_broadcast
+broadcast.publish
+url = broadcast.share_url
+
+puts "\n\n-----------------------------------"
+puts "Broadcast URL: #{url}"
+puts "Stream URL: #{broadcast.stream_url}"
+puts "-----------------------------------\n\n"
+
+stream_video(ARGV[0], broadcast.stream_url)
